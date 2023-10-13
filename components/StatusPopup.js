@@ -4,6 +4,7 @@ import React from "react";
 export default function StatusPopup({ status, onPress }) {
   const msg = status === "winner" ? "You win!" : "You lose!";
   const btnMsg = status === "winner" ? "Play again" : "Try again";
+
   return (
     <Modal
       visible={status !== "playing"}

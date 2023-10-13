@@ -18,6 +18,7 @@ export default function Life({ wrongLetters }) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 0.5,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

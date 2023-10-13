@@ -1,15 +1,18 @@
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Svg, { Line, Circle, Rect } from "react-native-svg";
 
 export default function HangmanFigure({ wrongLetters }) {
   const Base = <Rect fill={"white"} width="250" height="40" x="0" y="350" />;
   const Pole = <Rect fill={"white"} width="10" height="350" x="20" y="0" />;
   const PoleArm = <Rect fill={"white"} width="250" height="10" x="5" y="15" />;
+  const Bracket = (
+    <Line x1="70" y1="20" x2="25" y2="70" stroke="white" strokeWidth="10" />
+  );
   const Rope = (
     <Line x1="200" y1="0" x2="200" y2="140" stroke="white" strokeWidth="5" />
   );
   const Head = (
-    <Circle cx="200" cy="150" r="30" strokeWidth="5" fill={"#fff"} />
+    <Circle cx="200" cy="150" r="30" strokeWidth="5" fill={"white"} />
   );
   const Neck = (
     <Line x1="200" y1="180" x2="200" y2="220" stroke="white" strokeWidth="10" />
@@ -39,13 +42,14 @@ export default function HangmanFigure({ wrongLetters }) {
       >
         {/* {Base} */}
         {Rope}
+        {Bracket}
         {Pole}
         {PoleArm}
         {wrongLetters > 0 ? Head : null}
         {wrongLetters > 1 ? Neck : null}
-        {wrongLetters > 2 ? Body : null}
-        {wrongLetters > 3 ? LeftArm : null}
-        {wrongLetters > 4 ? RightArm : null}
+        {wrongLetters > 2 ? LeftArm : null}
+        {wrongLetters > 3 ? RightArm : null}
+        {wrongLetters > 4 ? Body : null}
         {wrongLetters > 5 ? LeftLeg : null}
         {wrongLetters > 6 ? RightLeg : null}
       </Svg>
@@ -56,7 +60,6 @@ export default function HangmanFigure({ wrongLetters }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
   },
 });

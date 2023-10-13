@@ -16,7 +16,7 @@ export default function InputBox({
       <View style={styles.inputContainer}>
         <Text style={styles.btnText}>{input}</Text>
       </View>
-      <View style={styles.inputBoxContainer}>
+      <View style={styles.wordBoxContainer}>
         {answer.split("").map((letter, index) => (
           <Text style={styles.text} key={index}>
             {correctLetters.includes(letter) ? letter : "_"}
@@ -34,13 +34,14 @@ export default function InputBox({
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
   },
   inputContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
@@ -48,8 +49,8 @@ const styles = StyleSheet.create({
     width: "12%",
     height: 55,
   },
-  inputBoxContainer: {
-    backgroundColor: "#fff",
+  wordBoxContainer: {
+    backgroundColor: "white",
     width: "65%",
     borderRadius: 10,
     padding: 10,
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     letterSpacing: 3,
   },
   btn: {
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     height: 55,
   },
   btnDisable: {
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,

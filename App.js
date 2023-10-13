@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { WordList } from "./assets/data";
+import * as Utils from "./components/Utils";
 import Header from "./components/Header";
 import InputBox from "./components/InputBox";
 import Score from "./components/Score";
@@ -16,29 +17,36 @@ export default function App() {
   const [wrongLetters, setWrongLetters] = useState("");
   const [usedRandNums, setUsedRandNums] = useState([]);
   const [randNum, setRandNum] = useState(0);
-  const [score, setScore] = useState(0);
   const [status, setStatus] = useState("playing");
+  const [score, setScore] = useState(0);
+  const [maxScore, setMaxScore] = useState(0);
+  const [moveCounter, setMoveCounter] = useState(0);
 
   const answer = WordList[randNum].toUpperCase();
 
   useEffect(() => {
-    const num = shuffleRandNum();
+    const num = Utils.shuffleRandNum(WordList.length);
     setRandNum(num);
     setUsedRandNums([...usedRandNums, num]);
+    Utils.getValueFor("score", setScore);
+    Utils.getValueFor("maxScore", setMaxScore);
+    Utils.getValueFor("moveCounter", setMoveCounter);
   }, []);
 
-  const shuffleRandNum = () => {
-    return Math.floor(Math.random() * WordList.length);
-  };
-
-  const storeCorrectLetter = (keyInput) => {
+  const storeLetter = (keyInput) => {
     if (answer.includes(keyInput) && !correctLetters.includes(keyInput)) {
       const newCorrectLetters = correctLetters + keyInput;
       setCorrectLetters(newCorrectLetters);
       isWinner(newCorrectLetters);
     } else if (!wrongLetters.includes(keyInput))
       setWrongLetters(wrongLetters + keyInput);
-    if (wrongLetters.length > 5) setStatus("lost");
+    if (wrongLetters.length > 5) {
+      setScore(0);
+      Utils.save("score", "0");
+      setStatus("lost");
+    }
+    setMoveCounter(moveCounter + 1);
+    Utils.save("moveCounter", (moveCounter + 1).toString());
     setInput("");
   };
 
@@ -48,42 +56,51 @@ export default function App() {
       if (!word.includes(letter)) status = "playing";
     });
     setStatus(status);
-    status === "winner" && setScore(score + 1);
-  };
-
-  const newGame = () => {
-    let num = randNum;
-    if (usedRandNums.length === WordList.length) {
-      alert("You've played all the words!");
-      setUsedRandNums([]);
+    if (status === "winner") {
+      setScore(score + 1);
+      Utils.save("score", (score + 1).toString());
+      if (score + 1 > maxScore) {
+        setMaxScore(score + 1);
+        Utils.save("maxScore", (score + 1).toString());
+      }
     }
-    while (usedRandNums.includes(num)) {
-      num = shuffleRandNum();
-    }
-    setRandNum(num);
-    setUsedRandNums([...usedRandNums, num]);
   };
 
   const handlePressPopup = () => {
-    if (status === "winner") newGame();
+    setStatus("playing");
+    newGame();
     setCorrectLetters("");
     setWrongLetters("");
-    setStatus("playing");
+  };
+
+  const newGame = () => {
+    let num = Utils.shuffleRandNum(WordList.length);
+    if (usedRandNums.length === WordList.length) {
+      alert("You've played all the words!");
+      setUsedRandNums([num]);
+      setRandNum(num);
+      return;
+    }
+    while (usedRandNums.includes(num)) {
+      num = Utils.shuffleRandNum(WordList.length);
+    }
+    setRandNum(num);
+    setUsedRandNums([...usedRandNums, num]);
   };
 
   return (
     <View style={styles.container}>
       <Header />
       <Life wrongLetters={wrongLetters.length} />
-      <Score score={score} />
-      <HangmanFigure wrongLetters={wrongLetters.length} />
-      {/* <View style={styles.letterContainer}> */}
-      {/* </View> */}
+      <View style={styles.row}>
+        <HangmanFigure wrongLetters={wrongLetters.length} />
+        <Score score={score} maxScore={maxScore} moveCounter={moveCounter} />
+      </View>
       <InputBox
         answer={answer}
         correctLetters={correctLetters}
         input={input}
-        storeLetters={storeCorrectLetter}
+        storeLetters={storeLetter}
       />
       <Keyboard
         letters={wrongLetters + correctLetters}
@@ -101,11 +118,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#25292e",
   },
-  letterContainer: {
-    justifyContent: "center",
-    alignContent: "center",
-  },
-  imageContainer: {
-    paddingTop: 58,
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
