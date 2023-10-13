@@ -11,8 +11,9 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   header: {
-    margin: 70,
+    marginTop: 20,
     alignItems: "center",
+    marginBottom: 10,
   },
   text: {
     fontSize: 20,

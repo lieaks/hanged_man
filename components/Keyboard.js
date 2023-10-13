@@ -1,12 +1,13 @@
 import { View, Pressable, StyleSheet, Text } from "react-native";
 import LetterButton from "./LetterButton";
 
-export default function Keyboard({ letters, onPress }) {
+export default function Keyboard({ letters, onPress, input }) {
   const qwertyLayout = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
     ["Z", "X", "C", "V", "B", "N", "M"],
   ];
+
   return (
     <View style={styles.keyboard}>
       {qwertyLayout.map((row, rowIndex) => (
@@ -16,6 +17,7 @@ export default function Keyboard({ letters, onPress }) {
               key={index}
               letterLabel={letters.includes(key) ? "" : key}
               onPress={onPress}
+              input={input}
             />
           ))}
         </View>

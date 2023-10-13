@@ -1,6 +1,6 @@
 import { View, Pressable, StyleSheet, Text } from "react-native";
 
-export default function LetterButton({ index, letterLabel, onPress }) {
+export default function LetterButton({ index, letterLabel, onPress, input }) {
   return (
     <Pressable
       key={index}
@@ -8,7 +8,11 @@ export default function LetterButton({ index, letterLabel, onPress }) {
       onPress={() => onPress(letterLabel)}
       // onPress={() => console.log(letterLabel)}
     >
-      <Text style={styles.buttonText}>{letterLabel}</Text>
+      <Text
+        style={input === letterLabel ? styles.btnTextActive : styles.btnText}
+      >
+        {letterLabel}
+      </Text>
     </Pressable>
   );
 }
@@ -23,9 +27,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
     borderWidth: 1,
   },
-  buttonText: {
+  btnText: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#fff",
+    color: "white",
+  },
+  btnTextActive: {
+    fontSize: 24,
+    fontWeight: "800",
+    color: "red",
   },
 });

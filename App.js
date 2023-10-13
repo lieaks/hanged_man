@@ -3,22 +3,23 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { WordList } from "./assets/data";
 import Header from "./components/Header";
-import HintBox from "./components/HintBox";
 import InputBox from "./components/InputBox";
+import Score from "./components/Score";
+import Life from "./components/Life";
 import Keyboard from "./components/Keyboard";
 import StatusPopup from "./components/StatusPopup";
 import HangmanFigure from "./components/HangmanFigure";
 
 export default function App() {
+  const [input, setInput] = useState("");
   const [correctLetters, setCorrectLetters] = useState("");
   const [wrongLetters, setWrongLetters] = useState("");
   const [usedRandNums, setUsedRandNums] = useState([]);
   const [randNum, setRandNum] = useState(0);
+  const [score, setScore] = useState(0);
   const [status, setStatus] = useState("playing");
-  const [hintClicked, setHintClicked] = useState(false);
 
-  const answer = WordList[randNum].word.toUpperCase();
-  const hint = WordList[randNum].hint.toUpperCase();
+  const answer = WordList[randNum].toUpperCase();
 
   useEffect(() => {
     const num = shuffleRandNum();
@@ -38,6 +39,7 @@ export default function App() {
     } else if (!wrongLetters.includes(keyInput))
       setWrongLetters(wrongLetters + keyInput);
     if (wrongLetters.length > 5) setStatus("lost");
+    setInput("");
   };
 
   const isWinner = (word) => {
@@ -46,6 +48,7 @@ export default function App() {
       if (!word.includes(letter)) status = "playing";
     });
     setStatus(status);
+    status === "winner" && setScore(score + 1);
   };
 
   const newGame = () => {
@@ -66,24 +69,26 @@ export default function App() {
     setCorrectLetters("");
     setWrongLetters("");
     setStatus("playing");
-    setHintClicked(false);
   };
 
   return (
     <View style={styles.container}>
       <Header />
+      <Life wrongLetters={wrongLetters.length} />
+      <Score score={score} />
       <HangmanFigure wrongLetters={wrongLetters.length} />
       {/* <View style={styles.letterContainer}> */}
-      <HintBox
-        hint={hint}
-        hintClicked={hintClicked}
-        setHintClicked={setHintClicked}
-      />
       {/* </View> */}
-      <InputBox answer={answer} correctLetters={correctLetters} />
+      <InputBox
+        answer={answer}
+        correctLetters={correctLetters}
+        input={input}
+        storeLetters={storeCorrectLetter}
+      />
       <Keyboard
         letters={wrongLetters + correctLetters}
-        onPress={(keyInput) => storeCorrectLetter(keyInput)}
+        onPress={(keyInput) => setInput(keyInput)}
+        input={input}
       />
       <StatusPopup status={status} onPress={handlePressPopup} />
       <StatusBar style="auto" />
