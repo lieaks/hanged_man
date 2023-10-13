@@ -1,7 +1,11 @@
 ### Getting started
 
-First, install the dependencies:
+First, install expo:
+````bash
+npm add expo
+````
 
+the dependencies:
 ````bash
 npx expo install
 ````
