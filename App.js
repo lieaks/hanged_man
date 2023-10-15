@@ -85,7 +85,7 @@ export default function App() {
       num = Utils.shuffleRandNum(WordList.length);
     }
     setRandNum(num);
-    setUsedRandNums([...usedRandNums, num]);
+    setUsedRandNums((usedRandNums) => [...usedRandNums, num]);
   };
 
   return (
