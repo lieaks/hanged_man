@@ -34,19 +34,23 @@ export default function App() {
   }, []);
 
   const storeLetter = (keyInput) => {
-    if (answer.includes(keyInput) && !correctLetters.includes(keyInput)) {
+    setMoveCounter(moveCounter + 1);
+    Utils.save("moveCounter", (moveCounter + 1).toString());
+    if (answer.includes(keyInput)) {
       const newCorrectLetters = correctLetters + keyInput;
       setCorrectLetters(newCorrectLetters);
       isWinner(newCorrectLetters);
-    } else if (!wrongLetters.includes(keyInput))
-      setWrongLetters(wrongLetters + keyInput);
-    if (wrongLetters.length > 5) {
-      setScore(0);
-      Utils.save("score", "0");
-      setStatus("lost");
+    } else {
+      setWrongLetters((prevWrongLetters) => {
+        const updatedWrongLetters = prevWrongLetters + keyInput;
+        if (updatedWrongLetters.length === 7) {
+          setScore(0);
+          Utils.save("score", "0");
+          setStatus("lose");
+        }
+        return updatedWrongLetters;
+      });
     }
-    setMoveCounter(moveCounter + 1);
-    Utils.save("moveCounter", (moveCounter + 1).toString());
     setInput("");
   };
 
@@ -107,7 +111,7 @@ export default function App() {
         onPress={(keyInput) => setInput(keyInput)}
         input={input}
       />
-      <StatusPopup status={status} onPress={handlePressPopup} />
+      <StatusPopup status={status} onPress={handlePressPopup} word={answer} />
       <StatusBar style="auto" />
     </View>
   );

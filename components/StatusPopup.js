@@ -1,7 +1,7 @@
 import { StyleSheet, Modal, Text, View, Pressable } from "react-native";
 import React from "react";
 
-export default function StatusPopup({ status, onPress }) {
+export default function StatusPopup({ status, onPress, word }) {
   const msg = status === "winner" ? "You win!" : "You lose!";
   const btnMsg = status === "winner" ? "Play again" : "Try again";
 
@@ -14,6 +14,7 @@ export default function StatusPopup({ status, onPress }) {
       <View style={styles.container}>
         <View style={styles.popup}>
           <Text style={styles.text}>{msg}</Text>
+          <Text style={styles.text}>{word}</Text>
           <Pressable style={styles.btn} onPress={onPress}>
             <Text style={styles.btnText}>{btnMsg}</Text>
           </Pressable>
