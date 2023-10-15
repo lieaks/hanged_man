@@ -55,7 +55,6 @@ export const WordList = [
   "float",
   "appliance",
   "baseball",
-  "Front-End : The Hanged Man 4",
   "dust",
   "repair",
   "ragged",
