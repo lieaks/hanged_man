@@ -98,7 +98,15 @@ export default function App() {
       <Life wrongLetters={wrongLetters.length} />
       <View style={styles.row}>
         <HangmanFigure wrongLetters={wrongLetters.length} />
-        <Score score={score} maxScore={maxScore} moveCounter={moveCounter} />
+        <Score
+          score={score}
+          maxScore={maxScore}
+          moveCounter={moveCounter}
+          save={Utils.save}
+          setScore={setScore}
+          setMaxScore={setMaxScore}
+          setMoveCounter={setMoveCounter}
+        />
       </View>
       <InputBox
         answer={answer}

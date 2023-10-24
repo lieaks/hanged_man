@@ -23,11 +23,12 @@ export default function InputBox({
           </Text>
         ))}
       </View>
-      <View style={input ? styles.btn : styles.btnDisable}>
-        <Pressable onPress={() => handlePressConfirm()}>
-          <FontAwesome name="send" size={24} color="black" />
-        </Pressable>
-      </View>
+      <Pressable
+        style={input ? styles.btn : styles.btnDisable}
+        onPress={() => handlePressConfirm()}
+      >
+        <FontAwesome name="send" size={24} color="black" />
+      </Pressable>
     </View>
   );
 }
