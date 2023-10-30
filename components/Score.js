@@ -9,40 +9,41 @@ export default function Score({
   setMaxScore,
   setMoveCounter,
 }) {
+  const reset = () => {
+    save("maxScore", "0");
+    setMaxScore(0);
+    save("score", "0");
+    setScore(0);
+    save("moveCounter", "0");
+    setMoveCounter(0);
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.counter}>
+      <View style={styles.reset}>
         <Pressable
           style={styles.btn}
           onPress={() => {
-            save("maxScore", "0");
-            setMaxScore(0);
+            reset();
           }}
         >
+          <Text style={styles.text}>Reset</Text>
+        </Pressable>
+      </View>
+      <View style={styles.counter}>
+        <Pressable style={styles.btn}>
           <Text style={styles.text}>Max</Text>
           <Text style={styles.text}>{maxScore}</Text>
         </Pressable>
       </View>
       <View style={styles.counter}>
-        <Pressable
-          style={styles.btn}
-          onPress={() => {
-            save("score", "0");
-            setScore(0);
-          }}
-        >
+        <Pressable style={styles.btn}>
           <Text style={styles.text}>Score</Text>
           <Text style={styles.text}>{score}</Text>
         </Pressable>
       </View>
       <View style={styles.counter}>
-        <Pressable
-          style={styles.btn}
-          onPress={() => {
-            save("moveCounter", "0");
-            setMoveCounter(0);
-          }}
-        >
+        <Pressable style={styles.btn}>
           <Text style={styles.text}>Moves</Text>
           <Text style={styles.text}>{moveCounter}</Text>
         </Pressable>
@@ -57,6 +58,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
+  },
+  reset: {
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    width: "60%",
+    height: "16%",
   },
   counter: {
     backgroundColor: "white",
